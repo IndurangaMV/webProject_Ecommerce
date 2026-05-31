@@ -20,6 +20,10 @@ if ($result = $conn->query($sql)) {
             exit;
         } else {
             echo "Invalid Login";
+            exit;
         }
+    } else {
+        header("Location: ../views/login.php?showModel=3");
+        exit;
     }
 }
