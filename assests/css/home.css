@@ -1,0 +1,65 @@
+.header {
+    width: 100%;
+}
+
+.title-block {
+    width: 100%;
+    height: 80px;
+    /* background-color: blueviolet; */
+    display: flex;
+}
+
+.logo-block {
+    height: 80px;
+    width: 25%;
+    /* background-color: aqua; */
+}
+
+.name-block {
+    height: 80px;
+    width: 75%;
+    /* background-color: chartreuse; */
+    display: flex;
+    flex-direction: row;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.nav-bar {
+    width: 100%;
+    height: 40px;
+    background-color: rgb(31, 31, 241);
+    color: white;
+    display: flex;
+    border-radius: 5px;
+}
+
+.breadcumb {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.profile-tab {
+    display: flex;
+    align-content: end;
+}
+
+.nav-left {
+    height: 40px;
+    width: 80%;
+    /* background-color: green; */
+    align-items: center;
+    display: flex;
+}
+
+.nav-right {
+    height: 40px;
+    width: 20%;
+    display: flex;
+    align-items: center;
+    /* background-color: red; */
+}
+
+.p-img {
+    width: 40px;
+    border-radius: 50px;
+}
