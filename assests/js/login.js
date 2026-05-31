@@ -58,7 +58,24 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Login Failed! Please check your credentials and try again.");
         openModal(loginModal);
         setActiveTrigger(loginBtn);
-    } else {
+    } else if (params.get("showModel") === "4") {
+        alert("Registration Successful! Please login with your credentials.");
+        openModal(loginModal);
+        setActiveTrigger(loginBtn);
+    } else if (params.get("showModel") === "5") {
+        alert("You password does not match with the re-entered password!");
+        openModal(registerModal);
+        setActiveTrigger(registerBtn);
+    } else if (params.get("showModel") === "6") {
+        alert("the email you entered is already registered! Please use a different email or login with your credentials.");
+        openModal(registerModal);
+        setActiveTrigger(registerBtn);
+    } else if (params.get("showModel") === "7") {
+        const error = params.get("error");
+        alert("Registration Failed! " + error);
+        openModal(registerModal);
+        setActiveTrigger(registerBtn);
+    }else{
         openModal(loginModal);
         setActiveTrigger(loginBtn);
     }
@@ -89,4 +106,13 @@ document.addEventListener("keydown", function (event) {
         closeModal(loginModal);
         closeModal(registerModal);
     }
+});
+
+document.getElementById("province").addEventListener("change", function () {
+    const provinceId = this.value;
+    fetch("../controllers/getDistrict.php?province_id=" + provinceId)
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("district").innerHTML = data;
+        });
 });
