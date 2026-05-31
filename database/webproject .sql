@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 29, 2026 at 06:38 AM
+-- Generation Time: May 31, 2026 at 07:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -74,20 +74,22 @@ CREATE TABLE `product` (
   `p_name` varchar(45) DEFAULT NULL,
   `price` double DEFAULT 0,
   `category` int(11) NOT NULL,
-  `qty` int(11) DEFAULT 0
+  `qty` int(11) DEFAULT 0,
+  `admin_status_as_id` int(11) NOT NULL,
+  `seller_status_s_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`p_id`, `p_name`, `price`, `category`, `qty`) VALUES
-(1, '344', NULL, 0, 0),
-(2, 'BUCK CONVERTER', 250, 0, 0),
-(3, '12V 5A SMPS', 1500, 3, 10),
-(4, '12V 10A SMPS', 2000, 3, 12),
-(5, '12V 20A SMPS', 2500, 3, 10),
-(6, 'Arduino UNO', 1100, 1, 20);
+INSERT INTO `product` (`p_id`, `p_name`, `price`, `category`, `qty`, `admin_status_as_id`, `seller_status_s_id`) VALUES
+(1, '344', NULL, 0, 0, 0, 0),
+(2, 'BUCK CONVERTER', 250, 0, 0, 0, 0),
+(3, '12V 5A SMPS', 1500, 3, 10, 0, 0),
+(4, '12V 10A SMPS', 2000, 3, 12, 0, 0),
+(5, '12V 20A SMPS', 2500, 3, 10, 0, 0),
+(6, 'Arduino UNO', 1100, 1, 20, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -102,17 +104,21 @@ CREATE TABLE `user` (
   `email` varchar(45) DEFAULT NULL,
   `contact_no` varchar(45) DEFAULT NULL,
   `gender` int(11) NOT NULL,
-  `user_type` int(11) NOT NULL
+  `user_type` int(11) NOT NULL,
+  `district` int(11) NOT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `zip_code` char(5) DEFAULT NULL,
+  `image_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `contact_no`, `gender`, `user_type`) VALUES
-(1, 'admin', '1234', 'admin@gmail.com', '2122', 1, 1),
-(2, 'customer', '1234', 'cus@gmail.com', '2122', 1, 3),
-(3, 'seller', '1234', 'seller@gmail.com', '2122', 1, 2);
+INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `contact_no`, `gender`, `user_type`, `district`, `address`, `zip_code`, `image_id`) VALUES
+(1, 'admin', '1234', 'admin@gmail.com', '2122', 1, 1, 0, NULL, NULL, 0),
+(2, 'customer', '1234', 'cus@gmail.com', '2122', 1, 3, 0, NULL, NULL, 0),
+(3, 'seller', '1234', 'seller@gmail.com', '2122', 1, 2, 0, NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -155,7 +161,9 @@ ALTER TABLE `gender`
 --
 ALTER TABLE `product`
   ADD PRIMARY KEY (`p_id`),
-  ADD KEY `fk_product_category_idx` (`category`);
+  ADD KEY `fk_product_category_idx` (`category`),
+  ADD KEY `fk_product_admin_status1_idx` (`admin_status_as_id`),
+  ADD KEY `fk_product_seller_status1_idx` (`seller_status_s_id`);
 
 --
 -- Indexes for table `user`
@@ -163,7 +171,9 @@ ALTER TABLE `product`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`),
   ADD KEY `fk_user_gender1_idx` (`gender`),
-  ADD KEY `fk_user_user_type1_idx` (`user_type`);
+  ADD KEY `fk_user_user_type1_idx` (`user_type`),
+  ADD KEY `fk_user_district1_idx` (`district`),
+  ADD KEY `fk_user_user_image1_idx` (`image_id`);
 
 --
 -- Indexes for table `user_type`
@@ -207,13 +217,17 @@ ALTER TABLE `user_type`
 -- Constraints for table `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category`) REFERENCES `category` (`c_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_product_admin_status1` FOREIGN KEY (`admin_status_as_id`) REFERENCES `admin_status` (`as_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_product_category` FOREIGN KEY (`category`) REFERENCES `category` (`c_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_product_seller_status1` FOREIGN KEY (`seller_status_s_id`) REFERENCES `seller_status` (`s_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `user`
 --
 ALTER TABLE `user`
+  ADD CONSTRAINT `fk_user_district1` FOREIGN KEY (`district`) REFERENCES `district` (`d_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_user_gender1` FOREIGN KEY (`gender`) REFERENCES `gender` (`gender_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user_user_image1` FOREIGN KEY (`image_id`) REFERENCES `user_image` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_user_user_type1` FOREIGN KEY (`user_type`) REFERENCES `user_type` (`type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
