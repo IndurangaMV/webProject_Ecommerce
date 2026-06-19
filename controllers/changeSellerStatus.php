@@ -1,47 +1,53 @@
 <?php
-// Connect to database and start session
+
 include "../config/connection.php";
 include "../config/session.php";
 
+
+// ADMIN CHECK
 if (!isset($_SESSION['user']) || $_SESSION['user_type'] != 1) {
-  header("Location: ../views/login.php");
-  exit;
+    header("Location: ../views/login.php");
+    exit;
 }
 
-$id = intval($_GET['id'] ?? 0);
-$action = $_GET['action'] ?? '';
 
-if ($id <= 0) {
-  header("Location: ../views/sellerManagement.php");
-  exit;
+// GET DATA
+$id = $_GET['id'];
+$action = $_GET['action'];
+
+
+// DEFAULT STATUS
+$status = null;
+
+
+// MAP ACTIONS → STATUS
+if ($action == "approve" || $action == "activate") {
+    $status = "ACTIVE";
+}
+elseif ($action == "reject") {
+    $status = "REJECTED";
+}
+elseif ($action == "suspend") {
+    $status = "SUSPENDED";
 }
 
-switch ($action) {
-  case 'approve':
-    $status = 'ACTIVE';
-    break;
-  case 'reject':
-    $status = 'REJECTED';
-    break;
-  case 'suspend':
-    $status = 'SUSPENDED';
-    break;
-  case 'activate':
-    $status = 'ACTIVE';
-    break;
-  default:
-    $status = null;
-    break;
+
+// UPDATE STATUS
+if ($status != null) {
+
+    $sql = "
+    UPDATE user
+    SET status='$status'
+    WHERE user_id='$id'
+    AND user_type=2
+    ";
+
+    $conn->query($sql);
 }
 
-if ($status !== null) {
-  $stmt = $conn->prepare("UPDATE user SET status = ? WHERE user_id = ? AND user_type = 2");
-  if ($stmt) {
-    $stmt->bind_param('si', $status, $id);
-    $stmt->execute();
-  }
-}
 
+// BACK TO PAGE
 header("Location: ../views/sellerManagement.php");
 exit;
+
 ?>
