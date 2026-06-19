@@ -1,118 +1,116 @@
 <?php
-// Connect to database and start session
-include "../config/connection.php";
+
 include "../config/session.php";
+include "../config/connection.php";
 
+
+// ADMIN CHECK
 if (!isset($_SESSION['user']) || $_SESSION['user_type'] != 1) {
-  header("Location: ../views/login.php");
-  exit;
-}
-
-$seller_id = intval($_GET['id'] ?? 0);
-if ($seller_id <= 0) {
-  header("Location: ../views/sellerManagement.php");
-  exit;
-}
-
-$sellerName = 'Seller';
-$statusLabel = 'N/A';
-$sellerStmt = $conn->prepare("SELECT username, COALESCE(status, 'N/A') AS status FROM user WHERE user_id = ? AND user_type = 2");
-if ($sellerStmt) {
-  $sellerStmt->bind_param('i', $seller_id);
-  $sellerStmt->execute();
-  $sellerResult = $sellerStmt->get_result();
-  if ($sellerResult && $sellerRow = $sellerResult->fetch_assoc()) {
-    $sellerName = $sellerRow['username'];
-    $statusLabel = $sellerRow['status'];
-  } else {
-    header("Location: ../views/sellerManagement.php");
+    header("Location: ../views/login.php");
     exit;
-  }
 }
 
-$hasSellerId = false;
-$columnCheck = $conn->query("SHOW COLUMNS FROM product LIKE 'seller_id'");
-if ($columnCheck && $columnCheck->num_rows > 0) {
-  $hasSellerId = true;
+
+// GET SELLER ID
+$seller_id = $_GET['id'] ?? 0;
+
+if ($seller_id <= 0) {
+    header("Location: sellerManagement.php");
+    exit;
 }
 
-$stats = [
-  'total_products' => 0,
-  'total_quantity' => 0,
-  'average_price' => 0,
-];
 
-if ($hasSellerId) {
-  $statsStmt = $conn->prepare("SELECT COUNT(*) AS total_products, COALESCE(SUM(qty),0) AS total_quantity, COALESCE(AVG(price),0) AS average_price FROM product WHERE seller_id = ?");
-  if ($statsStmt) {
-    $statsStmt->bind_param('i', $seller_id);
-    $statsStmt->execute();
-    $statsResult = $statsStmt->get_result();
-    if ($statsResult) {
-      $stats = $statsResult->fetch_assoc();
-    }
-  }
-} else {
-  $statsResult = $conn->query("SELECT COUNT(*) AS total_products, COALESCE(SUM(qty),0) AS total_quantity, COALESCE(AVG(price),0) AS average_price FROM product");
-  if ($statsResult) {
-    $stats = $statsResult->fetch_assoc();
-  }
-}
+// GET SELLER NAME
+$seller = $conn->query("SELECT username FROM user WHERE user_id=$seller_id")->fetch_assoc();
+$sellerName = $seller['username'];
 
-$productSql = "SELECT p.p_id, p.p_name, COALESCE(c.c_name, 'Uncategorized') AS category_name, p.price, p.qty FROM product p LEFT JOIN category c ON p.category = c.c_id";
-if ($hasSellerId) {
-  $productSql .= " WHERE p.seller_id = ? ORDER BY p.p_id ASC";
-  $productStmt = $conn->prepare($productSql);
-  if ($productStmt) {
-    $productStmt->bind_param('i', $seller_id);
-    $productStmt->execute();
-    $productResult = $productStmt->get_result();
-  }
-} else {
-  $productSql .= " ORDER BY p.p_id ASC";
-  $productResult = $conn->query($productSql);
-}
+
+
+// STATISTICS
+
+$stats = $conn->query("
+SELECT 
+    COUNT(*) AS total_products,
+    SUM(price) AS total_value,
+    AVG(price) AS avg_price
+FROM product
+WHERE seller_id=$seller_id
+")->fetch_assoc();
+
+
+
+// PRODUCT LIST
+
+$products = $conn->query("
+SELECT p.p_id, p.p_name, c.c_name, p.price
+FROM product p
+LEFT JOIN category c ON p.category = c.c_id
+WHERE p.seller_id=$seller_id
+ORDER BY p.price DESC
+");
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Seller Performance</title>
-  <link rel="stylesheet" href="../assests/css/style.css">
+    <title>Seller Performance</title>
+    <link rel="stylesheet" href="../assests/css/style.css">
 </head>
+
 <body>
+
 <div class="container">
-  <h1>Seller Performance for <?php echo htmlspecialchars($sellerName); ?></h1>
-  <p>Status: <?php echo htmlspecialchars($statusLabel); ?></p>
-  <?php if (!$hasSellerId): ?>
-    <p><em>Seller-specific product linking is not available in the current database schema. Showing all products instead.</em></p>
-  <?php endif; ?>
-  <p>Total Products: <?php echo htmlspecialchars($stats['total_products']); ?></p>
-  <p>Total Quantity in Stock: <?php echo htmlspecialchars($stats['total_quantity']); ?></p>
-  <p>Average Price: <?php echo number_format((float)$stats['average_price'], 2); ?></p>
 
-  <h2>Products</h2>
-  <table>
-    <tr>
-      <th>Product ID</th><th>Name</th><th>Category</th><th>Price</th><th>Quantity</th>
-    </tr>
-    <?php if (!empty($productResult) && $productResult->num_rows > 0): ?>
-      <?php while ($row = $productResult->fetch_assoc()): ?>
+    <h2>Performance - <?php echo $sellerName; ?></h2>
+
+    <!-- STATS -->
+    <div class="stats-container">
+
+        <div class="stat-card">
+            <h3>Products</h3>
+            <p><?php echo $stats['total_products']; ?></p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Total Value</h3>
+            <p>LKR <?php echo $stats['total_value']; ?></p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Average Price</h3>
+            <p>LKR <?php echo $stats['avg_price']; ?></p>
+        </div>
+
+    </div>
+
+    <!-- PRODUCT TABLE -->
+    <table border="1">
+
         <tr>
-          <td><?php echo htmlspecialchars($row['p_id']); ?></td>
-          <td><?php echo htmlspecialchars($row['p_name']); ?></td>
-          <td><?php echo htmlspecialchars($row['category_name']); ?></td>
-          <td><?php echo htmlspecialchars($row['price']); ?></td>
-          <td><?php echo htmlspecialchars($row['qty']); ?></td>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
         </tr>
-      <?php endwhile; ?>
-    <?php else: ?>
-      <tr><td colspan="5">No products found.</td></tr>
-    <?php endif; ?>
-  </table>
 
-  <br>
-  <a href="sellerManagement.php">Back to Seller Management</a>
+        <?php while($row = $products->fetch_assoc()){ ?>
+
+            <tr>
+                <td><?php echo $row['p_id']; ?></td>
+                <td><?php echo $row['p_name']; ?></td>
+                <td><?php echo $row['c_name']; ?></td>
+                <td><?php echo $row['price']; ?></td>
+            </tr>
+
+        <?php } ?>
+
+    </table>
+
+    <br>
+    <a href="sellerManagement.php">Back</a>
+
 </div>
+
 </body>
 </html>
