@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2026 at 09:39 PM
+-- Generation Time: Jun 20, 2026 at 11:38 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -117,10 +117,10 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `contact_no`, `gender`, `user_type`, `district`, `address`, `zip_code`, `image_id`, `approval`, `status`) VALUES
 (1, 'admin', '1234', 'admin@gmail.com', '2122', 1, 1, 0, NULL, NULL, 0, 1, 'ACTIVE'),
-(2, 'customer', '1234', 'cus@gmail.com', '2122', 1, 3, 0, NULL, NULL, 0, 1, 'ACTIVE'),
 (3, 'seller', '1234', 'seller@gmail.com', '2122', 1, 2, 0, NULL, NULL, 0, 1, 'ACTIVE'),
 (6, 'induranga', '112', 'induranga21297@gmail.com', '0789677660', 1, 3, 17, '111', '10017', NULL, 1, 'ACTIVE'),
-(7, 'saman', '1234', 'saman@gmail.com', '0785466987', 1, 3, 12, 'no.21', '10014', NULL, 1, 'ACTIVE');
+(7, 'saman', '1234', 'saman@gmail.com', '0785466987', 1, 3, 12, 'no.21', '10014', NULL, 1, 'ACTIVE'),
+(8, 'teshan', 'abcd1234', 'teshan1234@gmail.com', '078967766055', 1, 3, 12, 'aa', '10017', NULL, 1, 'ACTIVE');
 
 -- --------------------------------------------------------
 
@@ -202,7 +202,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user_type`
