@@ -23,8 +23,15 @@
         </a>
       <?php
       } else {
+        if($_SESSION["user_type"]==3){
+          $filename="userProfile.php";
+        }else if($_SESSION["user_type"]==2){
+          $filename="sellerProfile.php";
+        }else{
+          $filename="#";
+        }
       ?>
-        <a id="profileBtn" class="nav-pill" href="../views/userProfile.php" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:#0f172a;font-weight:700;background:#eef4ff;padding:0 14px;border-radius:999px;border:1px solid #cfe0ff;min-width:150px;height:48px;line-height:1;box-sizing:border-box;">
+        <a id="profileBtn" class="nav-pill" href="../views/<?php echo $filename;?>" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:#0f172a;font-weight:700;background:#eef4ff;padding:0 14px;border-radius:999px;border:1px solid #cfe0ff;min-width:150px;height:48px;line-height:1;box-sizing:border-box;">
           Profile
         </a>
         <a id="signOut_Btn" class="nav-pill" href="../config/logout.php" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;color:#0f172a;font-weight:700;background:#eef4ff;padding:0 14px;border-radius:999px;border:1px solid #cfe0ff;min-width:150px;height:48px;line-height:1;box-sizing:border-box;">
