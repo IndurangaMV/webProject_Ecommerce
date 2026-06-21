@@ -1,9 +1,49 @@
 <?php
+include "../config/session.php";
+require_once "../config/connection.php"; 
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-// Checking if a seller session exists, falling back to 'Seller Admin'
-$sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['seller_name']) : 'Gamma Partner';
+
+// Check the standard user session configuration
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
+}
+$user_role = isset($_SESSION['user_type']) ? (int)$_SESSION['user_type'] : 0;
+
+if ($user_role !== 2) {
+    // If they are a regular buyer (2) or role is unknown, redirect them to the buyer profile
+    header("Location: login.php"); 
+    exit();
+}
+
+$username = htmlspecialchars($_SESSION['user']);
+
+// Initialize variables for form inputs
+$firstname    = '';
+$lastname     = '';
+$email        = '';
+$password_val = '';
+
+// Query your shared 'user' table using the current session name
+$query = "SELECT * FROM user WHERE username = ? LIMIT 1";
+$stmt = $conn->prepare($query);
+
+if ($stmt) {
+    $stmt->bind_param("s", $_SESSION['user']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($userData = $result->fetch_assoc()) {
+        $firstname    = htmlspecialchars($userData['firstname'] ?? '');
+        $lastname     = htmlspecialchars($userData['lastname'] ?? '');
+        $email        = htmlspecialchars($userData['email'] ?? '');
+        $password_val = htmlspecialchars($userData['password'] ?? '');
+    }
+    $stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,13 +51,15 @@ $sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['sell
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seller Control Panel - Gamma Electronics</title>
-    <link rel="stylesheet" href="../assests/css/userProfile.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assests/css/userProfile.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+
     
     <style>
         .content-section { display: none; }
         .content-section.active-content { display: block; }
         
-        /* Quick custom additions for seller metric cards */
         .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
         .metric-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 12px; text-align: center; }
         .metric-card h3 { margin: 0 0 10px 0; font-size: 14px; color: #64748b; text-transform: uppercase; }
@@ -30,15 +72,43 @@ $sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['sell
 
     <div class="account-container">
         
-        <!--<div class="user-welcome-header" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; border-radius: 16px; padding: 24px;">
-            <div class="welcome-avatar" style="background: rgba(255,255,255,0.1);">
-                <i class="fa-solid fa-store" style="color: #38bdf8;"></i>
-            </div>
-            <div class="welcome-text">
-                <span class="greeting" style="color: #94a3b8;">Seller Center</span>
-                <h2 class="username" style="color: #fff;"><?php echo $sellerName; ?></h2>
-            </div>
-        </div>-->
+    <div class="user-welcome-header">
+    <form action="../config/uploadProfileImage.php" method="POST" enctype="multipart/form-data" id="pfpForm">
+        <label for="pfpInput" class="welcome-avatar" style="cursor: pointer; position: relative; overflow: hidden; display: flex;">
+            <?php 
+            // Fetch image using the cross-reference relational mapping
+            $imgQuery = "SELECT ui.path FROM user u 
+                         LEFT JOIN user_image ui ON u.image_id = ui.id 
+                         WHERE u.username = ? LIMIT 1";
+            $imgStmt = $conn->prepare($imgQuery);
+            $user_avatar = '';
+            
+            if ($imgStmt) {
+                $imgStmt->bind_param("s", $_SESSION['user']);
+                $imgStmt->execute();
+                $imgResult = $imgStmt->get_result();
+                if ($imgData = $imgResult->fetch_assoc()) {
+                    $user_avatar = $imgData['path'] ?? '';
+                }
+                $imgStmt->close();
+            }
+
+            if (!empty($user_avatar) && file_exists($user_avatar)): ?>
+                <img src="<?php echo $user_avatar; ?>" alt="Profile Picture" style="width: 100%; height: 100%; object-fit: cover;">
+            <?php else: ?>
+                <i class="fa-solid fa-user"></i>
+            <?php endif; ?>
+            
+            <div style="position: absolute; bottom: 0; background: rgba(0,0,0,0.6); width: 100%; font-size: 10px; color: #fff; text-align: center; padding: 2px 0;">Edit</div>
+        </label>
+        <input type="file" name="profile_image" id="pfpInput" accept="image/*" style="display: none;" onchange="document.getElementById('pfpForm').submit();">
+    </form>
+
+    <div class="welcome-text">
+        <span class="greeting">Hello!</span>
+        <h2 class="username"><?php echo $username; ?></h2>
+    </div>
+</div>
 
         <div class="dashboard-layout">
             <aside class="account-sidebar">
@@ -53,15 +123,18 @@ $sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['sell
 
             <main class="account-main-content">
                 
-                <div id="section-overview" class="content-section active-content">
-                    <h2>Dashboard Overview</h2>
-                    <div class="metrics-grid">
-                        <div class="metric-card"><h3>Total Sales</h3><p>LKR 0.00</p></div>
-                        <div class="metric-card"><h3>Orders Received</h3><p>0</p></div>
-                        <div class="metric-card"><h3>Live Products</h3><p>0</p></div>
-                    </div>
-                    <p>Welcome to your merchant portal. Use the navigation sidebar to list items and review customer purchases.</p>
-                </div>
+                 <div id="section-overview" class="content-section active-content">
+                    <p class="dashboard-intro">
+                    Hello <strong><?php echo $username; ?></strong> 
+                    (not <strong><?php echo $username; ?></strong>? 
+                     <a href="../config/logout.php" class="link-alt">Log out</a>)
+                    </p>
+    
+                    <p class="dashboard-text" style="margin-bottom: 30px;">
+                      From your account dashboard you can view your <strong style="color: blue;">manage products</strong>, manage your <strong style="color: blue;">sales orders</strong>, and <strong style="color: blue;">edit your password and account details</strong>.
+                    </p>
+                     
+               </div>
 
                 <div id="section-products" class="content-section">
                     <h2>Inventory Management</h2>
@@ -80,21 +153,21 @@ $sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['sell
                         <div class="form-row">
                             <div class="form-group">
                                 <label>First name <span class="required">*</span></label>
-                                <input type="text" name="firstname" value="Teshan" required>
+                                <input type="text" name="firstname" value="<?php echo $firstname; ?>" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Last name <span class="required">*</span></label>
-                                <input type="text" name="lastname" value="Thevindu" required>
+                                <input type="text" name="lastname" value="<?php echo $lastname; ?>" required>
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Display name <span class="required">*</span></label>
-                                <input type="text" name="displayname" value="<?php echo $sellerName; ?>" required>
+                                <input type="text" name="displayname" value="<?php echo $username; ?>" required>
                                 <small class="form-hint">This will be how your name will be displayed in the seller section and in reviews</small>
                             </div>
                         </div>
@@ -102,22 +175,22 @@ $sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['sell
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Email address <span class="required">*</span></label>
-                                <input type="email" name="email" value="teshan318@gmail.com" required>
+                                <input type="email" name="email" value="<?php echo $email; ?>" required>
                             </div>
                         </div>
 
                         <fieldset class="password-change-fieldset">
                             <legend>Password change</legend>
 
-                            <div class="form-row">
-                                <div class="form-group password-wrapper">
-                                    <label>Current password (leave blank to leave unchanged)</label>
-                                    <input type="password" name="current_password" value="********">
-                                    <i class="fa-regular fa-eye toggle-password"></i>
+                        <div class="form-row">
+                            <div class="form-group password-wrapper">
+                                <label>Current password (leave blank to leave unchanged)</label>
+                                <input type="password" name="current_password" value="<?php echo $password_val; ?>">
+                                <i class="fa-regular fa-eye toggle-password"></i>
                                 </div>
-                            </div>
+                           </div>
 
-                            <div class="form-row">
+                           <!-- <div class="form-row">
                                 <div class="form-group password-wrapper">
                                     <label>New password (leave blank to leave unchanged)</label>
                                     <input type="password" name="new_password">
@@ -131,7 +204,7 @@ $sellerName = isset($_SESSION['seller_name']) ? htmlspecialchars($_SESSION['sell
                                     <input type="password" name="confirm_password">
                                     <i class="fa-regular fa-eye toggle-password"></i>
                                 </div>
-                            </div>
+                            </div>-->
                         </fieldset>
 
                         <button type="submit" class="save-changes-btn">Save changes</button>
