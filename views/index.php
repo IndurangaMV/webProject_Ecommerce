@@ -1,8 +1,21 @@
 <?php
 include "../config/session.php";
 require_once "../config/connection.php";
-// CHECK LOGIN
 
+$categorySql = "SELECT * FROM category ORDER BY c_name ASC";
+$categoryResult = $conn->query($categorySql);
+
+$productSql = "SELECT 
+    product.*,
+    category.c_name AS category_name,
+    product_image.path
+FROM product
+LEFT JOIN product_image 
+    ON product.p_id = product_image.product
+LEFT JOIN category 
+    ON product.category = category.c_id
+ORDER BY product.p_name ASC;";
+$productResult = $conn->query($productSql);
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,82 +26,76 @@ require_once "../config/connection.php";
 </head>
 
 <body>
-    <?php include 'partials/header.php';
-    ?>
+    <?php include 'partials/header.php'; ?>
     <div class="container">
+        <aside class="leftbar">
+            <h2>Filter products</h2>
+            <form id="searchForm" onsubmit="SearchProducts(); return false;">
+                <label for="searchText">Search</label>
+                <input id="searchText" type="text" name="text" placeholder="Search products by name or keyword" />
 
-        <div class="leftbar">
-            <form>
-                <label>Price</label>
-                <div class="p-block" style="display:inline;">
-                    <lable>from</lable>
-                    <input type="number" name="min_price" placeholder="Min Price" />
-                </div>
-                <div class="p-block" style="display:inline;">
-                    <lable>to</lable>
-                    <input type="number" name="max_price" placeholder="Max Price" />
-                </div>
-                <input type="text" name="text" placeholder="Search products..." />
-                <select name="category">
+                <label for="category">Category</label>
+                <select id="category" name="category">
                     <option value="">All Categories</option>
-                    <?php
-                    $sql = "SELECT * FROM category";
-                    $result = $conn->query($sql);
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
+                    <?php if ($categoryResult && $categoryResult->num_rows > 0) {
+                        while ($row = $categoryResult->fetch_assoc()) {
                     ?>
-                            <option value="<?php echo $row["c_id"]; ?>"><?php echo $row["c_name"]; ?></option>
-                    <?php
-                        }
-                    }
-                    ?>
+                            <option value="<?php echo htmlspecialchars($row["c_id"]); ?>"><?php echo htmlspecialchars($row["c_name"]); ?></option>
+                    <?php }
+                    } ?>
                 </select>
-                <label>Sort by price</label>
-                <div style="display:inline;">
-                    <input id="lh" type="radio" name="sort" value="asc" checked>
-                    <label for="lh">Low to High</label>
-                </div>
-                <div style="display:inline;">
-                    <input id="hl" type="radio" name="sort" value="desc">
-                    <label for="hl">High to Low</label>
+
+                <div class="filter-row">
+                    <div>
+                        <label for="min_price">Min price</label>
+                        <input id="min_price" type="number" name="min_price" min="0" step="1" placeholder="Minimum" />
+                    </div>
+                    <div>
+                        <label for="max_price">Max price</label>
+                        <input id="max_price" type="number" name="max_price" min="0" step="1" placeholder="Maximum" />
+                    </div>
                 </div>
 
-                <button type="button" onclick="SearchProducts()">
-                    Search
-                </button>
+                <label>Sort by price</label>
+                <div class="sort-options">
+                    <label><input id="lh" type="radio" name="sort" value="asc" checked> Low to High</label>
+                    <label><input id="hl" type="radio" name="sort" value="desc"> High to Low</label>
+                </div>
+
+                <button type="submit">Search</button>
+                <button type="button" class="secondary" onclick="clearFilters()">Reset</button>
             </form>
-        </div>
-        <div class="rightbar" id="product-container">
-            <?php
-            $sql = "SELECT * FROM category";
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $cat_id = $row["c_id"];
-            ?>
-                    <h3><?php echo $row["c_name"]; ?></h3>
-                    <hr>
+        </aside>
+        <main class="rightbar">
+            <div id="product-container">
+                <div class="product-grid" id="product-grid">
+
                     <?php
-                    $sql2 = "SELECT * FROM product WHERE category=$cat_id";
-                    $result2 = $conn->query($sql2);
-                    if ($result2->num_rows > 0) {
-                        while ($row2 = $result2->fetch_assoc()) {
+                    if ($productResult && $productResult->num_rows > 0) {
+                        while ($row = $productResult->fetch_assoc()) {
                     ?>
                             <div class="product-card">
-                                <h4><?php echo $row2["p_name"]; ?></h4>
-                                <span>Rs. <?php echo $row2["price"]; ?></span><br>
-                                <span style="color:yellowgreen"><?php echo $row2["qty"]; ?> items are available</span>
+                                <div class="product-image">
+                                    <img src="<?php echo $row["path"] ?>" alt="Product image" />
+                                </div>
+                                <div class="product-details">
+                                    <h4 class="product-title"><?php echo htmlspecialchars($row["p_name"]); ?></h4>
+                                    <p class="product-price">Rs. <?php echo number_format($row["price"], 2); ?></p>
+                                    <p class="product-stock"><?php echo intval($row["qty"]) > 0 ? 'In stock' : 'Out of stock'; ?></p>
+                                    <a href="singleProduct.php?id=<?php echo $row["p_id"]; ?>">
+                                        <button class="btn-view">View Product</button>
+                                    </a>
+                                </div>
                             </div>
                     <?php
                         }
+                    } else {
+                        echo '<div class="no-results">No products available right now. Try adjusting the filters.</div>';
                     }
                     ?>
-
-            <?php
-                }
-            }
-            ?>
-        </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <?php include 'partials/footer.php'; ?>

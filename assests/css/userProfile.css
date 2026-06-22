@@ -1,0 +1,434 @@
+/* --- Base Styles & Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #fcfcfc;
+    color: #333333;
+}
+
+/* --- Top Header Styling --- */
+.main-header {
+    background-color: #ffffff;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.header-container {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 900;
+    color: #3a3a3a;
+    letter-spacing: -1px;
+}
+
+.hamburger-menu {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Search Bar Wrapper */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    flex-grow: 1;
+    max-width: 600px;
+    margin: 0 30px;
+    overflow: hidden;
+}
+
+.category-dropdown {
+    padding: 10px 15px;
+    background-color: #ffffff;
+    font-size: 14px;
+    color: #666;
+    border-right: 1px solid #e0e0e0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.search-input {
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    outline: none;
+    font-size: 14px;
+}
+
+.search-btn {
+    background-color: #0008ff;
+    border: none;
+    padding: 11px 25px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.search-btn:hover {
+    background-color: #0008ff;
+}
+
+/* Header Action Right Elements */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.hotline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon-phone {
+    font-size: 24px;
+    color: #333;
+}
+
+.hotline .label {
+    display: block;
+    font-size: 12px;
+    color: #777;
+}
+
+.hotline .number {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.cart-icon {
+    position: relative;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: #0008ff;
+    font-size: 11px;
+    font-weight: bold;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-icon {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* --- Yellow Secondary Nav --- */
+.category-nav {
+    background-color: #0008ff;
+    overflow-x: auto;
+}
+
+.nav-links {
+    max-width: 1250px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    font-size: 13.5px;
+    padding: 15px 18px;
+    white-space: nowrap;
+    display: inline-block;
+    transition: background 0.2s;
+}
+
+.nav-links a:hover {
+    background-color: #0008ff;
+}
+
+/* --- Layout Content Container --- */
+.account-container {
+    max-width: 1250px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Welcome Segment */
+.user-welcome-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.welcome-avatar {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background-color: #dbdbdb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 32px;
+}
+
+.welcome-text .greeting {
+    font-size: 15px;
+    color: #777777;
+    display: block;
+}
+
+.welcome-text .username {
+    font-size: 20px;
+    font-weight: bold;
+    color: #111111;
+    margin-top: 2px;
+}
+
+/* Split Dashboard Grid */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 50px;
+    align-items: start;
+}
+
+/* --- Sidebar Menu Navigation --- */
+.account-sidebar {
+    border: 1px solid #e8e8e8;
+    background-color: #ffffff;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.menu-item {
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #111111;
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.15s ease;
+}
+
+/* Highlight Active States Exactly like image_4c6d97.png */
+.menu-item.active {
+    background-color: #0008ff;
+    border-bottom-color: #0008ff;
+}
+
+.menu-item.active a {
+    color: #000000;
+}
+
+.menu-item:not(.active):hover a {
+    background-color: #f9f9f9;
+    color: #0008ff;
+}
+
+/* --- Dashboard Main Core View Area --- */
+.account-main-content {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #555555;
+}
+
+.dashboard-intro {
+    margin-bottom: 25px;
+}
+
+.account-main-content a {
+    color: #2b70c9;
+    text-decoration: none;
+}
+
+.account-main-content a:hover {
+    text-decoration: underline;
+}
+
+.account-main-content .link-alt {
+    color: #2b70c9;
+}
+
+/* --- Responsive Adaptations --- */
+@media (max-width: 900px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .search-bar-container {
+        margin: 0 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .search-bar-container {
+        width: 100%;
+        margin: 0;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+/* --- Account Details Form Styling --- */
+.account-details-form {
+    max-width: 800px;
+    background-color: #ffffff;
+}
+
+.form-row {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: normal;
+    color: #111111;
+}
+
+.form-group label .required {
+    color: #cc0000;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    font-size: 14.5px;
+    color: #333333;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #a0a0a0;
+}
+
+.form-hint {
+    display: block;
+    font-size: 13px;
+    color: #555555;
+    font-style: italic;
+    margin-top: 2px;
+}
+
+/* Password Section */
+.password-change-fieldset {
+    border: none;
+    padding: 0;
+    margin: 30px 0 20px 0;
+}
+
+.password-change-fieldset legend {
+    font-size: 20px;
+    font-weight: bold;
+    color: #111111;
+    margin-bottom: 20px;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 40px;
+}
+
+.password-wrapper input[value] {
+    background-color: #eef3ff; /* Matching your image's active/filled password shade */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    cursor: pointer;
+    color: #777777;
+    font-size: 16px;
+}
+
+/* Save Button */
+.save-changes-btn {
+    background-color: #111111;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.save-changes-btn:hover {
+    background-color: #333333;
+}
+/* --- Addresses Form Heading Customization --- */
+.address-form-heading {
+    font-size: 20px;
+    font-weight: bold;
+    color: #111111;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
