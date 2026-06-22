@@ -116,3 +116,93 @@ document.getElementById("province").addEventListener("change", function () {
             document.getElementById("district").innerHTML = data;
         });
 });
+
+const loginForm = document.querySelector("#loginModal form");
+
+function showError(input, message) {
+    const existing = input.parentElement.querySelector(".error-message");
+    if (existing) existing.remove();
+    input.classList.add("input-error");
+    const error = document.createElement("span");
+    error.className = "error-message";
+    error.textContent = message;
+    input.parentElement.insertBefore(error, input.nextSibling);
+}
+
+function clearError(input) {
+    const existing = input.parentElement.querySelector(".error-message");
+    if (existing) existing.remove();
+    input.classList.remove("input-error");
+}
+
+function validateLoginField(input) {
+    const name = input.getAttribute("name");
+    const value = input.value.trim();
+    clearError(input);
+    if (!value) {
+        showError(input, name === "username" ? "Username is required." : "Password is required.");
+        return false;
+    }
+    return true;
+}
+
+if (loginForm) {
+    const loginInputs = loginForm.querySelectorAll("input");
+
+    loginInputs.forEach(function (input) {
+        input.addEventListener("blur", function () {
+            validateLoginField(this);
+        });
+        input.addEventListener("input", function () {
+            if (this.classList.contains("input-error")) {
+                validateLoginField(this);
+            }
+        });
+    });
+
+    loginForm.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            const target = e.target;
+            if (target.tagName === "INPUT") {
+                e.preventDefault();
+                loginForm.dispatchEvent(new Event("submit", { cancelable: true }));
+            }
+        }
+    });
+
+    loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        let valid = true;
+        loginInputs.forEach(function (input) {
+            if (!validateLoginField(input)) {
+                valid = false;
+            }
+        });
+
+        if (!valid) {
+            const firstError = loginForm.querySelector(".input-error");
+            if (firstError) firstError.focus();
+            return;
+        }
+
+        const formData = new FormData(loginForm);
+        try {
+            const res = await fetch(loginForm.action, {
+                method: "POST",
+                body: formData,
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            });
+            const data = await res.json();
+            if (data.status === "error") {
+                const passwordInput = loginForm.querySelector("input[name='password']");
+                showError(passwordInput, data.message);
+                passwordInput.focus();
+            } else if (data.status === "success") {
+                window.location.href = data.redirect;
+            }
+        } catch {
+            loginForm.submit();
+        }
+    });
+}
