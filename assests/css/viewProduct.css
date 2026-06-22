@@ -1,0 +1,329 @@
+/* ==========================================
+   COMPACT VIEW PRODUCT STYLESHEET (ENHANCED)
+   ========================================== */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', -apple-system, sans-serif;
+    
+    /* Glowing radial overlay to fade out circuit background seams */
+    background: radial-gradient(circle, rgba(15, 32, 67, 0.8) 0%, rgba(10, 17, 34, 0.95) 100%);
+                 /* Match your image folder structure */
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.view-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Semi-transparent Glassmorphic card container */
+.view-card {
+    display: flex;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.98); /* Solid white base with high opacity */
+    backdrop-filter: blur(10px); /* Soft background glass blur */
+    max-width: 900px; /* Large container width */
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    gap: 35px;
+    padding: 35px; /* Spacious padding */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
+}
+
+/* Left Column - Product Specifications & Seller info */
+.product-details {
+    flex: 1.4;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-details h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 24px; /* Slightly larger title */
+    margin-bottom: 8px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #ecf0f1;
+    margin-bottom: 15px;
+}
+
+.info-section {
+    margin-bottom: 20px;
+}
+
+.info-section h3 {
+    color: #296ab9;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px dashed #ecf0f1;
+    padding-bottom: 4px;
+    margin: 0 0 10px 0;
+}
+
+/* Data Listing Grid */
+.data-group {
+    display: flex;
+    justify-content: space-between;
+    padding: 9px 0; /* More spacing */
+    border-bottom: 1px solid #fcfdfe;
+    font-size: 15px;
+}
+
+.data-group:last-child {
+    border-bottom: none;
+}
+
+.data-label {
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+.data-value {
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+/* Redesigned Info Cards for missing details */
+.no-seller-alert {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.no-seller-alert h4 {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+    font-weight: 600;
+}
+
+.no-seller-alert p {
+    margin: 2px 0 0 0;
+    font-size: 11px;
+    color: #64748b;
+}
+
+.alert-icon {
+    font-size: 18px;
+}
+
+/* Right Column - Constrained image elements */
+.product-visual {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 350px; /* Larger image column */
+}
+
+.image-wrapper {
+    background-color: #f8f9fa;
+    border: 1px solid #eaedf0;
+    border-radius: 8px;
+    height: 280px; /* Taller image canvas */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 10px;
+    box-sizing: border-box;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+}
+
+.image-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    cursor: zoom-in;
+}
+
+.no-image {
+    color: #95a5a6;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.product-description {
+    background-color: #fcfdfe;
+    border-left: 3px solid #296ab9;
+    padding: 10px 12px;
+    border-radius: 4px;
+}
+
+.product-description h4 {
+    margin: 0 0 5px 0;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.product-description p {
+    color: #57606f;
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Badge styling */
+.badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.price-tag {
+    background-color: #e8f8f5;
+    color: #27ae60;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.badge-stock {
+    background-color: #eaf2f8;
+    color: #2980b9;
+}
+
+.badge-active {
+    background-color: #e8f8f5;
+    color: #2ecc71;
+}
+
+.badge-inactive {
+    background-color: #fdf2e9;
+    color: #e67e22;
+}
+
+.badge-out {
+    background-color: #fde8e8;
+    color: #e74c3c;
+}
+
+/* Animated Return Button */
+.back-link {
+    margin-top: auto;
+    text-decoration: none;
+}
+
+.btn-return {
+    width: 100%;
+    background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+    transition: all 0.3s ease;
+}
+
+.btn-return:hover {
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    box-shadow: 0 6px 15px rgba(44, 62, 80, 0.35);
+    transform: translateY(-2px); /* Makes button lift slightly */
+}
+
+.btn-return:active {
+    transform: translateY(0);
+}
+
+/* ==========================================
+   LIGHTBOX MODAL FOR IMAGE ZOOM
+   ========================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: zoomAnimation 0.25s ease-out;
+}
+
+@keyframes zoomAnimation {
+    from {
+        transform: scale(0.8); 
+        opacity: 0;
+    }
+    to {
+        transform: scale(1); 
+        opacity: 1;
+    }
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #ffffff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.2s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.close-modal:hover {
+    color: #e74c3c;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN (MOBILE SCREEN)
+   ========================================== */
+@media (max-width: 768px) {
+    .view-card {
+        /* Reverses visual and details so image stacks on top on mobile */
+        flex-direction: column-reverse;
+        padding: 20px;
+        gap: 20px;
+    }
+    .product-visual {
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,259 @@
+body {
+    margin: 0;
+    padding: 30px;
+    font-family: 'Segoe UI', sans-serif;
+    background: white;
+
+}
+
+/* =========================
+   CONTAINER
+========================= */
+.container1 {
+    max-width: 1200px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.96);
+    /* Keeps table background highly readable */
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background-image: url("../images/elecimage.jpg");
+
+}
+
+/* =========================
+   TITLE
+========================= */
+h1 {
+    text-align: center;
+    color: white;
+    /* Swapped from dark blue to white for dark backgrounds */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    /* Adds drop shadow for extra readability */
+    margin-bottom: 30px;
+    font-size: 35px;
+}
+
+/* =========================
+   STATS
+========================= */
+.stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.box {
+    flex: 1;
+    background: linear-gradient(135deg, #34b7db, #296ab9);
+    color: white;
+    text-align: center;
+    padding: 15px 0px;
+    border-radius: 12px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.box:hover {
+    transform: translateY(-5px);
+    transition: 0.3s;
+}
+
+/* =========================
+   SEARCH AREA
+========================= */
+.search-area {
+    background: rgba(255, 255, 255, 0.92);
+    /* 92% opaque white panel */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: #2c3e50;
+}
+
+.search-area label {
+    font-weight: bold;
+    color: #1e272e;
+}
+
+.search-area form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input[type="text"],
+select {
+    padding: 10px;
+    border: 1px solid #3498db;
+    background-color: #f0f7ff;
+    border-radius: 8px;
+    font-size: 14px;
+    min-width: 200px;
+}
+
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: #34db87;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+button[type="submit"] {
+    background: #296ab9;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background: #2930b9;
+}
+
+/* RESET BUTTON INSIDE <a> */
+a button {
+    background: #7f8c8d;
+    color: white;
+}
+
+a button:hover {
+    background: #636e72;
+}
+
+/* =========================
+   PRODUCT TABLE
+========================= */
+.table3 {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.table3 th {
+    background: #34495e;
+    color: white;
+    padding: 15px;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.table3 td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.table3 tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.table3 tr:hover {
+    background: #eaf4ff;
+}
+
+/* =========================
+   VIEW & DELETE BUTTONS
+========================= */
+.table3 button:first-child,
+.viewBtn {
+    background: #1264f3;
+    color: white;
+    margin-right: 5px;
+}
+
+.table3 button:first-child:hover,
+.viewBtn:hover {
+    background: #1013d6;
+}
+
+.table3 button:last-child,
+.deleteBtn {
+    background: #e74c3c;
+    color: white;
+}
+
+.table3 button:last-child:hover,
+.deleteBtn:hover {
+    background: #c0392b;
+}
+
+/* =========================
+   PRODUCT DETAILS CARD (viewProduct.php)
+========================= */
+.view-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 500px;
+    margin: 40px auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.view-card h2 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.data-group {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #34495e;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.data-label {
+    font-weight: bold;
+    color: #2c3e50;
+    display: inline-block;
+    width: 140px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 768px) {
+
+    .stats {
+        flex-direction: column;
+    }
+
+    .search-area form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+    }
+
+    .table3 {
+        font-size: 13px;
+    }
+
+    .view-card {
+        margin: 20px;
+        padding: 20px;
+    }
+}
