@@ -11,8 +11,10 @@ if(!isset($_SESSION["user"])){
     <?php
     if($_SESSION["user_type"]==1){
         ?>
-        <a href="../views/userManagement.php">User Management</a><br>
-        <a href="../views/productManagement.php">Product Management</a>
+        <a href="../views/customerManagement.php">Customer Management</a><br>
+        <a href="../views/sellerManagement.php">Seller Management</a><br>
+        <a href="../views/productManagement.php">Product Management</a><br>
+        <a href="../views/userManagement.php">Admin Dashboard</a>
         <?php
     }else if($_SESSION["user_type"]==2){
         ?>
@@ -27,8 +29,9 @@ if(!isset($_SESSION["user"])){
     }else{
         echo "Invalid User Type";
     }
+    ?>
+    <br><a href="../config/logout.php">Logout</a><?php
 }
 ?>
 
 
-<br><a href="../config/logout.php">Logout</a>
