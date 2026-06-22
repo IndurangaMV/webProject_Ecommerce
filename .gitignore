@@ -1,0 +1,22 @@
+# Build results
+bin/
+obj/
+.vs/
+
+# Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+*.dll
+*.pdb
+*.exe
+
+# NuGet
+*.nupkg
+packages/
+
+# Logs
+*.log
