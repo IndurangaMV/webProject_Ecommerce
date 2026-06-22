@@ -36,83 +36,58 @@ include 'partials/header.php';
 
     <h2>Add New Product</h2>
 
-    <!-- Display message -->
+    
+    <!-- ALERT MESSAGES WITH CSS CLASSES            -->
+    
 
     <?php if($status == "success"){ ?>
-
-        <p><?php echo $message; ?></p>
-
+        <div class="alert alert-success">
+            ✅ <?php echo $message; ?>
+        </div>
     <?php } ?>
 
     <?php if($status == "error"){ ?>
-
-        <p><?php echo $message; ?></p>
-
+        <div class="alert alert-error">
+            ❌ <?php echo $message; ?>
+        </div>
     <?php } ?>
 
+    <!-- ADD PRODUCT FORM WITH CSS CLASSES          -->
+    
 
-    <!-- Add Product Form -->
-
-    <form action="../controllers/addProduct.php" method="POST">
+    <form action="../controllers/addProduct.php" method="POST" class="product-form">
 
         <!-- Product Name -->
-
         <label>Product Name</label>
-
-        <input
-            type="text"
-            name="p_name"
-            required
-        >
-
-        <br><br>
+        <input type="text" name="p_name" required>
 
         <!-- Category -->
-
         <label>Category</label>
-
         <select name="category" required>
-
             <option value="">Select Category</option>
-
             <?php while($row = $result->fetch_assoc()){ ?>
-
                 <option value="<?php echo $row['c_id']; ?>">
-
                     <?php echo $row['c_name']; ?>
-
                 </option>
-
             <?php } ?>
-
         </select>
 
-        <br><br>
-
         <!-- Price -->
+        <label>Price (LKR)</label>
+        <input type="number" name="price" step="0.01" required>
 
-        <label>Price</label>
+        <label>Quantity</label>
+        <input type="number" name="qty" required min="1">
 
-        <input
-            type="number"
-            name="price"
-            step="0.01"
-            required
-        >
-
-        <br><br>
-
-        <button type="submit">
-            Add Product
-        </button>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-success">Add Product</button>
 
     </form>
 
     <br>
 
-    <a href="dashboard.php">
-        Back to Dashboard
-    </a>
+    <!-- Back Link -->
+    <a href="sellerProfile.php" class="back-link">Back to Dashboard</a>
 
 </div>
 

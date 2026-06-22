@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = this.getAttribute('data-target');
             if (!target) return;
 
-            e.preventDefault();
+            // e.preventDefault();
 
             document.querySelectorAll('.sidebar-menu .menu-item').forEach(li => {
                 li.classList.remove('active');

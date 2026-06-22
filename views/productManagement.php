@@ -167,9 +167,7 @@ $catList = $conn->query("SELECT * FROM category");
                         <button class='viewBtn' onclick='goToView(".$row['p_id'].")'>
                             View
                         </button>
-                        <button class='deleteBtn' onclick='confirmDelete(".$row['p_id'].")'>
-                            Delete
-                        </button>
+                       
                       </td>";
                
             }
