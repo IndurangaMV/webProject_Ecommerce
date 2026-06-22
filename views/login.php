@@ -10,6 +10,7 @@ require_once "../config/connection.php";
     <title>Login Page</title>
     <link rel="stylesheet" href="../assests/css/login.css">
     <script src="../assests/js/login.js" defer></script>
+    <script src="../assests/js/register.js" defer></script>
 </head>
 
 <body>
@@ -57,7 +58,14 @@ require_once "../config/connection.php";
 
                 <h2>Create Account</h2>
 
-                <form action="../config/register.php" method="post">
+                <form action="../config/register.php" method="post" novalidate>
+                    <div id="registerMessage" class="form-message" style="display:none;"></div>
+
+                    <label>First Name</label>
+                    <input type="text" name="firstName" required>
+
+                    <label>Last Name</label>
+                    <input type="text" name="lastName" required>
 
                     <label>Username</label>
                     <input type="text" name="username" required>

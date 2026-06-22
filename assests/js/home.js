@@ -1,24 +1,41 @@
 function SearchProducts() {
-    let minprice = document.getElementsByName("min_price")[0].value;
-    let maxprice = document.getElementsByName("max_price")[0].value;
-    let text = document.getElementsByName("text")[0].value;
-    let category = document.getElementsByName("category")[0].value;
-    let sort = document.querySelector('input[name="sort"]:checked').value;
+    const minprice = document.getElementById("min_price").value;
+    const maxprice = document.getElementById("max_price").value;
+    const text = document.getElementById("searchText").value;
+    const category = document.getElementById("category").value;
+    const sort = document.querySelector('input[name="sort"]:checked').value;
 
-    var formData = new FormData();
+    const formData = new FormData();
     formData.append("min_price", minprice);
     formData.append("max_price", maxprice);
     formData.append("text", text);
     formData.append("category", category);
     formData.append("sort", sort);
+
     fetch("../controllers/search.php", {
         method: "POST",
-        headers: {
-        },
         body: formData
     })
         .then(response => response.text())
         .then(data => {
-            document.getElementById("product-container").innerHTML = data;
+            const grid = document.getElementById("product-grid");
+            if (grid) {
+                grid.innerHTML = data;
+            }
+        })
+        .catch(() => {
+            const grid = document.getElementById("product-grid");
+            if (grid) {
+                grid.innerHTML = '<div class="no-results">Search failed. Please try again.</div>';
+            }
         });
+}
+
+function clearFilters() {
+    document.getElementById("searchText").value = "";
+    document.getElementById("min_price").value = "";
+    document.getElementById("max_price").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("lh").checked = true;
+    SearchProducts();
 }
