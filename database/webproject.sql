@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 20, 2026 at 03:41 PM
+-- Generation Time: Jun 22, 2026 at 04:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -172,6 +172,21 @@ CREATE TABLE `invoice` (
   `type` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `invoice`
+--
+
+INSERT INTO `invoice` (`inv_id`, `path`, `date`, `amount`, `type`) VALUES
+(1, '../invoices/invoice_1781983736.pdf', '2026-06-20', 8000, 1),
+(2, '../invoices/invoice_1781984773.pdf', '2026-06-20', 6000, 1),
+(3, '../invoices/invoice_1781984861.pdf', '2026-06-20', 10000, 1),
+(4, '../invoices/invoice_1781985151.pdf', '2026-06-20', 6000, 1),
+(5, '../invoices/invoice_1781985506.pdf', '2026-06-20', 16000, 1),
+(6, '../invoices/invoice_1781986038.pdf', '2026-06-20', 4000, 1),
+(7, '../invoices/invoice_1781986182.pdf', '2026-06-20', 0, 1),
+(8, '../invoices/invoice_1781986191.pdf', '2026-06-20', 0, 1),
+(9, '../invoices/invoice_1781986454.pdf', '2026-06-20', 6000, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -206,6 +221,16 @@ CREATE TABLE `message` (
   `seen` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`id`, `message`, `time`, `sender`, `receiver`, `seen`) VALUES
+(1, 'You have new order. Time: 2026-06-20 21:52:31', '2026-06-20 21:52:31', 1, 3, 1),
+(2, 'You have new order. Time: 2026-06-20 21:58:26', '2026-06-20 21:58:26', 1, 3, 1),
+(3, 'You have new order. Time: 2026-06-20 22:07:18', '2026-06-20 22:07:18', 1, 3, 1),
+(6, 'New order received', '2026-06-20 22:14:14', 1, 3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -217,50 +242,51 @@ CREATE TABLE `product` (
   `p_name` varchar(45) DEFAULT NULL,
   `price` double DEFAULT 0,
   `category` int(11) NOT NULL,
-  `seller_id` int(11) DEFAULT NULL
+  `seller_id` int(11) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`p_id`, `p_name`, `price`, `category`, `seller_id`) VALUES
-(1, '344', NULL, 0, NULL),
-(2, 'BUCK CONVERTER', 250, 0, NULL),
-(3, '12V 5A SMPS', 1500, 3, NULL),
-(4, '12V 10A SMPS', 2000, 3, NULL),
-(5, '12V 20A SMPS', 2500, 3, NULL),
-(6, 'Arduino UNO', 1100, 1, NULL),
-(7, 'Arduino UNO R3', 1100, 1, 3),
-(8, 'Arduino Mega 2560', 2200, 1, 3),
-(9, 'NodeMCU ESP8266', 950, 1, 3),
-(10, 'ESP32 Dev Board', 1800, 1, 3),
-(11, 'HC-SR04 Ultrasonic Sensor', 350, 2, 3),
-(12, 'DHT11 Temperature Sensor', 250, 2, 3),
-(13, 'IR Obstacle Sensor', 300, 2, 3),
-(14, 'MQ-2 Gas Sensor', 450, 2, 3),
-(15, '12V 5A SMPS', 1500, 3, 3),
-(16, '12V 10A SMPS', 2000, 3, 3),
-(17, '24V 5A Power Supply', 2800, 3, 3),
-(18, '220V to 12V Transformer', 1800, 4, 3),
-(19, '220V to 24V Transformer', 2200, 4, 3),
-(20, 'LED Bulb 5W', 350, 5, 3),
-(21, 'LED Bulb 12W', 550, 5, 3),
-(22, 'N20 Gear Motor', 700, 6, 3),
-(23, '775 DC Motor', 1200, 6, 3),
-(24, '16x2 LCD Display', 400, 7, 3),
-(25, '18650 Battery', 750, 8, 3),
-(26, 'Digital Multimeter DT830D', 1500, 9, 3),
-(27, 'LM2596 Buck Converter', 250, 11, 3),
-(28, 'L298N Motor Driver', 450, 11, 3),
-(29, 'Servo Motor SG90', 550, 6, 3),
-(30, 'Jumper Wire Set', 300, 12, 3),
-(31, 'Breadboard 830 Points', 400, 12, 3),
-(32, 'Relay Module 2 Channel', 450, 11, 3),
-(33, 'DS3231 RTC Module', 350, 11, 3),
-(34, 'MAX7219 LED Matrix Module', 600, 11, 3),
-(35, 'OLED Display 0.96\"', 950, 7, 3),
-(36, 'INA219 Current Sensor', 500, 2, 3);
+INSERT INTO `product` (`p_id`, `p_name`, `price`, `category`, `seller_id`, `qty`) VALUES
+(1, '344', NULL, 0, NULL, 0),
+(2, 'BUCK CONVERTER', 250, 0, NULL, NULL),
+(3, '12V 5A SMPS', 1500, 3, NULL, NULL),
+(4, '12V 10A SMPS', 2000, 3, NULL, 10),
+(5, '12V 20A SMPS', 2500, 3, NULL, NULL),
+(6, 'Arduino UNO', 1100, 1, NULL, NULL),
+(7, 'Arduino UNO R3', 1100, 1, 3, NULL),
+(8, 'Arduino Mega 2560', 2200, 1, 3, NULL),
+(9, 'NodeMCU ESP8266', 950, 1, 3, NULL),
+(10, 'ESP32 Dev Board', 1800, 1, 3, NULL),
+(11, 'HC-SR04 Ultrasonic Sensor', 350, 2, 3, NULL),
+(12, 'DHT11 Temperature Sensor', 250, 2, 3, NULL),
+(13, 'IR Obstacle Sensor', 300, 2, 3, NULL),
+(14, 'MQ-2 Gas Sensor', 450, 2, 3, NULL),
+(15, '12V 5A SMPS', 1500, 3, 3, NULL),
+(16, '12V 10A SMPS', 2000, 3, 3, 7),
+(17, '24V 5A Power Supply', 2800, 3, 3, NULL),
+(18, '220V to 12V Transformer', 1800, 4, 3, NULL),
+(19, '220V to 24V Transformer', 2200, 4, 3, NULL),
+(20, 'LED Bulb 5W', 350, 5, 3, NULL),
+(21, 'LED Bulb 12W', 550, 5, 3, NULL),
+(22, 'N20 Gear Motor', 700, 6, 3, NULL),
+(23, '775 DC Motor', 1200, 6, 3, NULL),
+(24, '16x2 LCD Display', 400, 7, 3, NULL),
+(25, '18650 Battery', 750, 8, 3, NULL),
+(26, 'Digital Multimeter DT830D', 1500, 9, 3, NULL),
+(27, 'LM2596 Buck Converter', 250, 11, 3, NULL),
+(28, 'L298N Motor Driver', 450, 11, 3, NULL),
+(29, 'Servo Motor SG90', 550, 6, 3, NULL),
+(30, 'Jumper Wire Set', 300, 12, 3, NULL),
+(31, 'Breadboard 830 Points', 400, 12, 3, NULL),
+(32, 'Relay Module 2 Channel', 450, 11, 3, NULL),
+(33, 'DS3231 RTC Module', 350, 11, 3, NULL),
+(34, 'MAX7219 LED Matrix Module', 600, 11, 3, NULL),
+(35, 'OLED Display 0.96\"', 950, 7, 3, NULL),
+(36, 'INA219 Current Sensor', 500, 2, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -288,6 +314,13 @@ CREATE TABLE `product_image` (
   `path` varchar(100) DEFAULT NULL,
   `product` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `path`, `product`) VALUES
+(1, '../assests/images/products/OIP.webp', 16);
 
 -- --------------------------------------------------------
 
@@ -342,6 +375,7 @@ INSERT INTO `seller_status` (`s_id`, `status`) VALUES
 --
 
 CREATE TABLE `selling` (
+  `s_id` int(11) NOT NULL,
   `user` int(11) NOT NULL,
   `product` int(11) NOT NULL,
   `quantity` int(11) DEFAULT NULL,
@@ -350,6 +384,19 @@ CREATE TABLE `selling` (
   `invoice` int(11) NOT NULL,
   `order_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `selling`
+--
+
+INSERT INTO `selling` (`s_id`, `user`, `product`, `quantity`, `date`, `amount`, `invoice`, `order_status`) VALUES
+(1, 15, 16, 3, '2026-06-20', 6000, 2, 1),
+(2, 15, 16, 3, '2026-06-20', 6000, 4, 1),
+(3, 15, 16, 8, '2026-06-20', 16000, 5, 1),
+(4, 15, 16, 2, '2026-06-20', 4000, 6, 1),
+(5, 15, 1, 5, '2026-06-20', 0, 7, 1),
+(6, 15, 1, 5, '2026-06-20', 0, 8, 1),
+(7, 15, 16, 3, '2026-06-20', 6000, 9, 1);
 
 -- --------------------------------------------------------
 
@@ -362,6 +409,14 @@ CREATE TABLE `selling_status` (
   `status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `selling_status`
+--
+
+INSERT INTO `selling_status` (`status_id`, `status`) VALUES
+(1, 'pending'),
+(2, 'shipped');
+
 -- --------------------------------------------------------
 
 --
@@ -371,6 +426,8 @@ CREATE TABLE `selling_status` (
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL,
   `username` varchar(45) DEFAULT NULL,
+  `firstname` varchar(50) DEFAULT NULL,
+  `lastname` varchar(50) DEFAULT NULL,
   `password` varchar(45) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `contact_no` varchar(45) DEFAULT NULL,
@@ -388,27 +445,27 @@ CREATE TABLE `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `password`, `email`, `contact_no`, `gender`, `user_type`, `district`, `address`, `zip_code`, `image_id`, `approval`, `status`) VALUES
-(1, 'admin', '1234', 'admin@gmail.com', '2122', 1, 1, 0, NULL, NULL, 0, 1, 'ACTIVE'),
-(3, 'seller', '1234', 'seller@gmail.com', '2122', 1, 2, 0, NULL, NULL, 0, 1, 'ACTIVE'),
-(6, 'induranga', '112', 'induranga21297@gmail.com', '0789677660', 1, 3, 17, '111', '10017', NULL, 1, 'ACTIVE'),
-(7, 'saman', '1234', 'saman@gmail.com', '0785466987', 1, 3, 12, 'no.21', '10014', NULL, 1, 'ACTIVE'),
-(8, 'teshan', 'abcd1234', 'teshan1234@gmail.com', '078967766055', 1, 3, 12, 'aa', '10017', NULL, 1, 'ACTIVE'),
-(9, 'admin', '1234', 'admin@gmail.com', '0711111111', 1, 1, 1, 'Colombo', '10000', NULL, 1, 'ACTIVE'),
-(10, 'seller1', '1234', 'seller1@gmail.com', '0712222222', 1, 2, 1, 'Colombo', '10001', NULL, 1, 'ACTIVE'),
-(11, 'seller2', '1234', 'seller2@gmail.com', '0713333333', 1, 2, 2, 'Gampaha', '11000', NULL, 1, 'ACTIVE'),
-(12, 'seller3', '1234', 'seller3@gmail.com', '0714444444', 2, 2, 3, 'Kalutara', '12000', NULL, 1, 'ACTIVE'),
-(13, 'kamal', '1234', 'kamal@gmail.com', '0771234567', 1, 3, 4, 'Kandy', '20000', NULL, 1, 'ACTIVE'),
-(14, 'nimal', '1234', 'nimal@gmail.com', '0771234568', 1, 3, 5, 'Matale', '21000', NULL, 1, 'ACTIVE'),
-(15, 'sunil', '1234', 'sunil@gmail.com', '0771234569', 1, 3, 6, 'Kurunegala', '60000', NULL, 1, 'ACTIVE'),
-(16, 'amal', '1234', 'amal@gmail.com', '0771234570', 1, 3, 7, 'Galle', '80000', NULL, 1, 'ACTIVE'),
-(17, 'saman', '1234', 'saman@gmail.com', '0771234571', 1, 3, 8, 'Matara', '81000', NULL, 1, 'ACTIVE'),
-(18, 'kasun', '1234', 'kasun@gmail.com', '0771234572', 1, 3, 9, 'Badulla', '90000', NULL, 1, 'ACTIVE'),
-(19, 'tharindu', '1234', 'tharindu@gmail.com', '0771234573', 1, 3, 10, 'Ratnapura', '70000', NULL, 1, 'ACTIVE'),
-(20, 'dilshan', '1234', 'dilshan@gmail.com', '0771234574', 1, 3, 11, 'Jaffna', '40000', NULL, 1, 'ACTIVE'),
-(21, 'nadeesha', '1234', 'nadeesha@gmail.com', '0771234575', 2, 3, 12, 'Anuradhapura', '50000', NULL, 1, 'ACTIVE'),
-(22, 'shehani', '1234', 'shehani@gmail.com', '0771234576', 2, 3, 13, 'Polonnaruwa', '51000', NULL, 1, 'ACTIVE'),
-(23, 'sachini', '1234', 'sachini@gmail.com', '0771234577', 2, 3, 14, 'Hambantota', '82000', NULL, 1, 'ACTIVE');
+INSERT INTO `user` (`user_id`, `username`, `firstname`, `lastname`, `password`, `email`, `contact_no`, `gender`, `user_type`, `district`, `address`, `zip_code`, `image_id`, `approval`, `status`) VALUES
+(1, 'admin', NULL, NULL, '1234', 'admin@gmail.com', '2122', 1, 1, 0, 'no.101', NULL, 0, 1, 'ACTIVE'),
+(3, 'seller', NULL, NULL, '1234', 'seller@gmail.com', '2122', 1, 2, 0, NULL, NULL, 0, 1, 'ACTIVE'),
+(6, 'induranga', NULL, NULL, '112', 'induranga21297@gmail.com', '0789677660', 1, 3, 17, '111', '10017', NULL, 1, 'ACTIVE'),
+(7, 'saman', NULL, NULL, '1234', 'saman@gmail.com', '0785466987', 1, 3, 12, 'no.21', '10014', NULL, 1, 'ACTIVE'),
+(8, 'teshan', NULL, NULL, 'abcd1234', 'teshan1234@gmail.com', '078967766055', 1, 3, 12, 'aa', '10017', NULL, 1, 'ACTIVE'),
+(9, 'admin', NULL, NULL, '1234', 'admin@gmail.com', '0711111111', 1, 1, 1, 'Colombo', '10000', NULL, 1, 'ACTIVE'),
+(10, 'seller1', NULL, NULL, '1234', 'seller1@gmail.com', '0712222222', 1, 2, 1, 'Colombo', '10001', NULL, 1, 'ACTIVE'),
+(11, 'seller2', NULL, NULL, '1234', 'seller2@gmail.com', '0713333333', 1, 2, 2, 'Gampaha', '11000', NULL, 1, 'ACTIVE'),
+(12, 'seller3', NULL, NULL, '1234', 'seller3@gmail.com', '0714444444', 2, 2, 3, 'Kalutara', '12000', NULL, 1, 'ACTIVE'),
+(13, 'kamal', NULL, NULL, '1234', 'kamal@gmail.com', '0771234567', 1, 3, 4, 'Kandy', '20000', NULL, 1, 'ACTIVE'),
+(14, 'nimal', NULL, NULL, '1234', 'nimal@gmail.com', '0771234568', 1, 3, 5, 'Matale', '21000', NULL, 1, 'ACTIVE'),
+(15, 'sunil', NULL, NULL, '1234', 'sunil@gmail.com', '0771234569', 1, 3, 17, 'no.101', '10017', NULL, 1, 'ACTIVE'),
+(16, 'amal', NULL, NULL, '1234', 'amal@gmail.com', '0771234570', 1, 3, 7, 'Galle', '80000', NULL, 1, 'ACTIVE'),
+(17, 'saman', NULL, NULL, '1234', 'saman@gmail.com', '0771234571', 1, 3, 8, 'Matara', '81000', NULL, 1, 'ACTIVE'),
+(18, 'kasun', NULL, NULL, '1234', 'kasun@gmail.com', '0771234572', 1, 3, 9, 'Badulla', '90000', NULL, 1, 'ACTIVE'),
+(19, 'tharindu', NULL, NULL, '1234', 'tharindu@gmail.com', '0771234573', 1, 3, 10, 'Ratnapura', '70000', NULL, 1, 'ACTIVE'),
+(20, 'dilshan', NULL, NULL, '1234', 'dilshan@gmail.com', '0771234574', 1, 3, 11, 'Jaffna', '40000', NULL, 1, 'ACTIVE'),
+(21, 'nadeesha', NULL, NULL, '1234', 'nadeesha@gmail.com', '0771234575', 2, 3, 12, 'Anuradhapura', '50000', NULL, 1, 'ACTIVE'),
+(22, 'shehani', NULL, NULL, '1234', 'shehani@gmail.com', '0771234576', 2, 3, 13, 'Polonnaruwa', '51000', NULL, 1, 'ACTIVE'),
+(23, 'sachini', NULL, NULL, '1234', 'sachini@gmail.com', '0771234577', 2, 3, 14, 'Hambantota', '82000', NULL, 1, 'ACTIVE');
 
 -- --------------------------------------------------------
 
@@ -458,6 +515,14 @@ CREATE TABLE `viewstt` (
   `id` int(11) NOT NULL,
   `status` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `viewstt`
+--
+
+INSERT INTO `viewstt` (`id`, `status`) VALUES
+(1, 'unseen'),
+(2, 'seen');
 
 --
 -- Indexes for dumped tables
@@ -556,7 +621,7 @@ ALTER TABLE `seller_status`
 -- Indexes for table `selling`
 --
 ALTER TABLE `selling`
-  ADD PRIMARY KEY (`user`,`product`),
+  ADD PRIMARY KEY (`s_id`),
   ADD KEY `fk_product_has_user_user1_idx` (`user`),
   ADD KEY `fk_product_has_user_product1_idx` (`product`),
   ADD KEY `fk_selling_invoice1_idx` (`invoice`),
@@ -629,13 +694,13 @@ ALTER TABLE `district`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `inv_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `inv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -647,7 +712,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `province`
@@ -662,10 +727,16 @@ ALTER TABLE `seller_status`
   MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `selling`
+--
+ALTER TABLE `selling`
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `selling_status`
 --
 ALTER TABLE `selling_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -689,7 +760,7 @@ ALTER TABLE `user_type`
 -- AUTO_INCREMENT for table `viewstt`
 --
 ALTER TABLE `viewstt`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
